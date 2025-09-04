@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, urna eu tincidunt consectetur, nisi nisl aliquam eros, a facilisis enim sapien at urna.</p>
+
+    <p>Les infos du moment :</p>
+    <ul>
+    {% for info in infos %}
+        <li>{{ info }}</li>
+    {% endfor %}
+    </ul>
+
+    {% endblock %}
