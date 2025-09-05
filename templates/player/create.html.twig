@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouveau joueur
+{% endblock %}
+
+{% block body %}
+	<body>
+		<h1>Créer un nouveau joueur</h1>
+		<form action="/player/create/validate" method="GET">
+			<label for="name">Nom du joueur:</label>
+			<input type="text" id="name" name="name" required>
+			<button type="submit">Créer le joueur</button>
+		</form>
+	</body>
+{% endblock %}
