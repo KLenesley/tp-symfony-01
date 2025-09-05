@@ -11,10 +11,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlayerController extends AbstractController
 {
-    #[Route('/player/', name: 'app_player')]
-    public function index(PlayerRepository $playerRepository): Response
+    private PlayerRepository $playerRepository;
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(PlayerRepository $playerRepository, EntityManagerInterface $entityManager)
     {
-        $players = $playerRepository->findAll();
+        $this->playerRepository = $playerRepository;
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/player/', name: 'app_player')]
+    public function index(): Response
+    {
+        $players = $this->playerRepository->findAll();
 
         return $this->render('player/index.html.twig', [
             'players' => $players
@@ -22,14 +31,15 @@ class PlayerController extends AbstractController
     }
 
     #[Route('/player/create/validate', name: 'app_create_player_validate')]
-    public function create(EntityManagerInterface $entityManager): Response
+    public function create(): Response
     {
         $name = $_GET['name'];
         $player = new Player();
         $player->setName($name);
+        $player->setExperience(0);
 
-        $entityManager->persist($player);
-        $entityManager->flush();
+        $this->entityManager->persist($player);
+        $this->entityManager->flush();
 
         return new Response('Player created with id '.$player->getId());
     }
@@ -38,5 +48,35 @@ class PlayerController extends AbstractController
     public function createPlayer(): Response
     {
         return $this->render('player/create.html.twig');
+    }
+
+    #[Route('/player/update/{id}/validate', name:'app_update_player_validate')]
+    public function update(int $id): Response
+    {
+        // Logic to update a player would go here
+    }
+
+    #[Route('/player/update/{id}', name: 'app_update_player')]
+    public function updatePlayer(): Response
+    {
+        return $this->render('player/update.html.twig');
+    }
+
+    #[Route('/player/delete/{id}/validate', name:'app_delete_player_validate')]
+    public function delete(int $id): Response
+    {
+        $player = $this->playerRepository->find($id);
+        if ($player) {
+            $this->entityManager->remove($player);
+            $this->entityManager->flush();
+            return new Response('Player deleted');
+        }
+        return new Response('Player not found', Response::HTTP_NOT_FOUND);
+    }
+
+    #[Route('/player/delete/{id}', name:'app_delete_player')]
+    public function deletePlayer(int $id): Response
+    {
+        return $this->render('player/delete.html.twig');
     }
 }

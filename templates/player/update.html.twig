@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mettre à jour un joueur
+{% endblock %}
+
+{% block body %}
+    <body>
+        <h1>Mettre à jour un joueur</h1>
+        <form action="/player/update/validate" method="GET">
+            <label for="name">Nouveau nom :</label>
+            <input type="text" id="name" name="name" required>
+            <button type="submit">Mettre à jour</button>
+        </form>
+    </body>
+{% endblock %}

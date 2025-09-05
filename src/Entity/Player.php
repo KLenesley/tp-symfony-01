@@ -18,6 +18,9 @@ class Player
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $experience = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,5 +48,17 @@ class Player
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getExperience(): ?int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(?int $experience): static
+    {
+        $this->experience = $experience;
+
+        return $this;
     }
 }
