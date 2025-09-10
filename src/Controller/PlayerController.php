@@ -3,24 +3,29 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Form\PlayerType;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlayerController extends AbstractController
 {
     private PlayerRepository $playerRepository;
     private EntityManagerInterface $entityManager;
+    private FormFactoryInterface $formFactory;
 
-    public function __construct(PlayerRepository $playerRepository, EntityManagerInterface $entityManager)
+    public function __construct(PlayerRepository $playerRepository, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory)
     {
         $this->playerRepository = $playerRepository;
         $this->entityManager = $entityManager;
+        $this->formFactory = $formFactory;
     }
 
-    #[Route('/player/', name: 'app_player')]
+    #[Route('/player', name: 'app_player')]
     public function index(): Response
     {
         $players = $this->playerRepository->findAll();
@@ -30,39 +35,29 @@ class PlayerController extends AbstractController
         ]);
     }
 
-    #[Route('/player/create/validate', name: 'app_create_player_validate')]
-    public function create(): Response
+    #[Route('/player/create', name: 'app_create_player')]
+    public function create(Request $request): Response
     {
-        $name = $_GET['name'];
         $player = new Player();
-        $player->setName($name);
-        $player->setExperience(0);
+        $form = $this->formFactory->create(PlayerType::class, $player);
 
-        $this->entityManager->persist($player);
-        $this->entityManager->flush();
 
-        return new Response('Player created with id '.$player->getId());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($player);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_player');
+        }
+
+        return $this->render('player/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/player/create', name: 'app_player_create')]
     public function createPlayer(): Response
     {
         return $this->render('player/create.html.twig');
     }
 
-    #[Route('/player/update/{id}/validate', name:'app_update_player_validate')]
-    public function update(int $id): Response
-    {
-        // Logic to update a player would go here
-    }
-
-    #[Route('/player/update/{id}', name: 'app_update_player')]
-    public function updatePlayer(): Response
-    {
-        return $this->render('player/update.html.twig');
-    }
-
-    #[Route('/player/delete/{id}/validate', name:'app_delete_player_validate')]
+    #[Route('/player/delete/{id}/validate', name: 'app_delete_player_validate')]
     public function delete(int $id): Response
     {
         $player = $this->playerRepository->find($id);
@@ -74,7 +69,7 @@ class PlayerController extends AbstractController
         return new Response('Player not found', Response::HTTP_NOT_FOUND);
     }
 
-    #[Route('/player/delete/{id}', name:'app_delete_player')]
+    #[Route('/player/delete/{id}', name: 'app_delete_player')]
     public function deletePlayer(int $id): Response
     {
         return $this->render('player/delete.html.twig');

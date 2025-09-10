@@ -4,12 +4,12 @@
 {% endblock %}
 
 {% block body %}
-	<body>
-		<h1>Créer un nouveau joueur</h1>
-		<form action="/player/create/validate" method="GET">
-			<label for="name">Nom du joueur:</label>
-			<input type="text" id="name" name="name" required>
-			<button type="submit">Créer le joueur</button>
-		</form>
-	</body>
+
+	<h1>Créer un nouveau joueur</h1>
+
+	{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button type="submit">Créer</button>
+	{{ form_end(form) }}
+
 {% endblock %}
