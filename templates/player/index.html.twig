@@ -10,7 +10,9 @@
 			<tr>
 				<th>ID</th>
 				<th>Nom</th>
-                <th>Expérience</th>
+				<th>Niveau</th>
+				<th>Groupes</th>
+				<th>Parties</th>
                 <th>Modifier</th>
                 <th>Supprimer</th>
 			</tr>
@@ -18,7 +20,17 @@
 				<tr>
 					<td>{{ player.id }}</td>
 					<td>{{ player.name }}</td>
-					<td>{{ player.experience }}</td>
+					<td>{{ player.level }}</td>
+					<td>
+						{% for group in player.groups %}
+							{{ group.label }}<br>
+						{% endfor %}
+					</td>
+					<td>
+						{% for game in player.game %}
+							{{ game.label }}<br>
+						{% endfor %}
+					</td>
 					<td></td>
 					<td><a href="{{ path('app_delete_player', {'id': player.id}) }}">Supprimer</a></td>
 				</tr>

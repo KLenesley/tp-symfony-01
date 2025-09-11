@@ -46,6 +46,7 @@ class PlayerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($player);
             $this->entityManager->flush();
+            
             return $this->redirectToRoute('app_player');
         }
 

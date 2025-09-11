@@ -46,6 +46,7 @@ final class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($group);
             $this->entityManager->flush();
+            
             return $this->redirectToRoute('app_group');
         }
 

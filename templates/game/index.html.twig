@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des parties
+{% endblock %}
+
+{% block body %}
+	<body>
+		<h1>Liste des parties</h1>
+		<table border="1">
+			<tr>
+				<th>ID</th>
+				<th>Label</th>
+				<th>Début</th>
+			</tr>
+			{% for game in games %}
+				<tr>
+					<td>{{ game.id }}</td>
+					<td>{{ game.label }}</td>
+					<td>{{ game.started|date('d/m/Y H:i') }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<a href="{{ path('app_create_game') }}">Créer une nouvelle partie</a>
+	</body>
+{% endblock %}
