@@ -17,8 +17,11 @@ class PlayerType extends AbstractType
             ->add('name', TextType::class)
             ->add('experience', HiddenType::class, ['data' => 1])
             ->add('level', null, [
-                'placeholder' => 'Choisir un niveau',
                 'choice_label' => 'label'
+            ])
+            ->add('groups', null, [
+                'multiple' => true,
+                'expanded' => true
             ])
         ;
     }

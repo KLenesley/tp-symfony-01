@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des groupes
+{% endblock %}
+
+{% block body %}
+	<body>
+		<h1>Liste des groupes</h1>
+		<table border="1">
+			<tr>
+				<th>ID</th>
+				<th>Label</th>
+			</tr>
+			{% for group in groups %}
+				<tr>
+					<td>{{ group.id }}</td>
+					<td>{{ group.label }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<a href="{{ path('app_create_group') }}">Créer un nouveau groupe</a>
+	</body>
+{% endblock %}

@@ -52,11 +52,6 @@ class PlayerController extends AbstractController
         return $this->render('player/create.html.twig', ['form' => $form->createView()]);
     }
 
-    public function createPlayer(): Response
-    {
-        return $this->render('player/create.html.twig');
-    }
-
     #[Route('/player/delete/{id}', name: 'app_delete_player')]
     public function delete(int $id): Response
     {
