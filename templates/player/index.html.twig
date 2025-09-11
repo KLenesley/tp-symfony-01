@@ -19,8 +19,11 @@
 					<td>{{ player.id }}</td>
 					<td>{{ player.name }}</td>
 					<td>{{ player.experience }}</td>
+					<td></td>
+					<td><a href="{{ path('app_delete_player', {'id': player.id}) }}">Supprimer</a></td>
 				</tr>
 			{% endfor %}
 		</table>
+		<a href="{{ path('app_create_player') }}">Créer un nouveau joueur</a>
 	</body>
 {% endblock %}

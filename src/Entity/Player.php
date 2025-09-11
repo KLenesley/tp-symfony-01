@@ -21,6 +21,10 @@ class Player
     #[ORM\Column(nullable: true)]
     private ?int $experience = null;
 
+    #[ORM\ManyToOne(inversedBy: 'players')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Level $level = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +62,18 @@ class Player
     public function setExperience(?int $experience): static
     {
         $this->experience = $experience;
+
+        return $this;
+    }
+
+    public function getLevel(): ?Level
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?Level $level): static
+    {
+        $this->level = $level;
 
         return $this;
     }

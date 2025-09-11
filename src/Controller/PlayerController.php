@@ -57,7 +57,7 @@ class PlayerController extends AbstractController
         return $this->render('player/create.html.twig');
     }
 
-    #[Route('/player/delete/{id}/validate', name: 'app_delete_player_validate')]
+    #[Route('/player/delete/{id}', name: 'app_delete_player')]
     public function delete(int $id): Response
     {
         $player = $this->playerRepository->find($id);
@@ -67,11 +67,5 @@ class PlayerController extends AbstractController
             return new Response('Player deleted');
         }
         return new Response('Player not found', Response::HTTP_NOT_FOUND);
-    }
-
-    #[Route('/player/delete/{id}', name: 'app_delete_player')]
-    public function deletePlayer(int $id): Response
-    {
-        return $this->render('player/delete.html.twig');
     }
 }
