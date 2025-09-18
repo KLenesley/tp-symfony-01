@@ -31,7 +31,7 @@
 							{{ game.label }}<br>
 						{% endfor %}
 					</td>
-					<td></td>
+					<td><a href="{{ path('app_update_player', {'id': player.id}) }}">Modifier</a></td>
 					<td><a href="{{ path('app_delete_player', {'id': player.id}) }}">Supprimer</a></td>
 				</tr>
 			{% endfor %}

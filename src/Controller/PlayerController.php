@@ -64,4 +64,22 @@ class PlayerController extends AbstractController
         }
         return new Response('Player not found', Response::HTTP_NOT_FOUND);
     }
+
+    #[Route('/player/update/{id}', name: 'app_update_player')]
+    public function update(int $id, Request $request): Response
+    {
+        $player = $this->playerRepository->find($id);
+        if (!$player) {
+            return new Response('Player not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->formFactory->create(PlayerType::class, $player);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_player');
+        }
+
+        return $this->render('player/update.html.twig', ['form' => $form->createView()]);
+    }
 }

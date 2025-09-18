@@ -39,10 +39,17 @@ class Player
     #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'players')]
     private Collection $game;
 
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'players')]
+    private Collection $category;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->game = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +149,30 @@ class Player
     public function removeGame(Game $game): static
     {
         $this->game->removeElement($game);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->category->removeElement($category);
 
         return $this;
     }
