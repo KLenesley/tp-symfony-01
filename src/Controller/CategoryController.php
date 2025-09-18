@@ -52,4 +52,34 @@ final class CategoryController extends AbstractController
 
         return $this->render('category/create.html.twig', ['form' => $form->createView()]);
     }
+
+    #[Route('/category/delete/{id}', name: 'app_delete_category')]
+    public function delete(int $id): Response
+    {
+        $category = $this->categoryRepository->find($id);
+        if ($category) {
+            $this->entityManager->remove($category);
+            $this->entityManager->flush();
+            return new Response('Category deleted');
+        }
+        return new Response('Category not found', Response::HTTP_NOT_FOUND);
+    }
+
+    #[Route('/category/update/{id}', name: 'app_update_category')]
+    public function update(int $id, Request $request): Response
+    {
+        $category = $this->categoryRepository->find($id);
+        if (!$category) {
+            return new Response('Category not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->formFactory->create(CategoryType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_category');
+        }
+
+        return $this->render('category/update.html.twig', ['form' => $form->createView()]);
+    }
 }

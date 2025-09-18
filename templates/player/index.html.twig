@@ -13,6 +13,7 @@
 				<th>Niveau</th>
 				<th>Groupes</th>
 				<th>Parties</th>
+				<th>Catégories</th>
                 <th>Modifier</th>
                 <th>Supprimer</th>
 			</tr>
@@ -29,6 +30,11 @@
 					<td>
 						{% for game in player.game %}
 							{{ game.label }}<br>
+						{% endfor %}
+					</td>
+					<td>
+						{% for category in player.category %}
+							{{ category.label }}<br>
 						{% endfor %}
 					</td>
 					<td><a href="{{ path('app_update_player', {'id': player.id}) }}">Modifier</a></td>

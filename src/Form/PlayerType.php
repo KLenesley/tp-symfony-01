@@ -27,6 +27,9 @@ class PlayerType extends AbstractType
                 'multiple' => true,
                 'expanded' => true
             ])
+            ->add('category', null, [
+                'required' => true
+            ])
         ;
     }
 
